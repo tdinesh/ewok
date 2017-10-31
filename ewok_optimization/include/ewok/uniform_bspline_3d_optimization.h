@@ -85,6 +85,18 @@ class UniformBSpline3DOptimization {
     initTrajectoryTimeOptimization();
   }
 
+  Vector3 evaluate(_Scalar t, int derivative = 0) const {
+
+    return spline_.evaluate(t + spline_.minValidTime(), derivative);
+  }
+
+  _Scalar getMaxValidTime(){
+    return spline_.maxValidTime();
+  }
+
+  _Scalar getMinValidTime(){
+    return spline_.minValidTime();
+  }
   void setNumCollisionChecksPerSegment(int n) {
 
 
