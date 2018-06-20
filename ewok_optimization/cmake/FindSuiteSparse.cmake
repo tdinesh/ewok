@@ -9,7 +9,7 @@ FIND_PATH(CHOLMOD_INCLUDE_DIR NAMES cholmod.h amd.h camd.h
     NO_DEFAULT_PATH
   )
 
-SET(SEARCH_PATHS /usr/local/lib;/usr/lib;/opt/local/lib;/sw/lib;/usr/lib/x86_64-linux-gnu)
+SET(SEARCH_PATHS /usr/local/lib;/usr/lib;/opt/local/lib;/sw/lib;/usr/lib/x86_64-linux-gnu;/usr/lib/arm-linux-gnueabihf)
 
 
 

@@ -67,7 +67,10 @@ class RingBufferBase {
   }
 
   inline void getIdx(const Vector3 & point, Vector3i & idx) const {
-      idx = (point / resolution_).array().floor().template cast<int>();
+      //idx = ((point / resolution_).array()).floor().template cast<int>();
+      Vector3 tmp = point / resolution_;
+      for(int i=0; i<3; i++)
+	idx[i] = std::floor(tmp[i]);
   }
 
   inline void getPoint(const Vector3i & idx, Vector3 & point) const {
