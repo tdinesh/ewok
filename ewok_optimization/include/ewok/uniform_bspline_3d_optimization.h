@@ -219,6 +219,10 @@ class UniformBSpline3DOptimization {
 
     spline_.getVisualizationMarker(traj_marker.markers[0], ns, 0, color1, cp_opt_start_idx, num_cp_opt, color2);
     spline_.getControlPointsMarker(traj_marker.markers[1], ns, 1, color1, cp_opt_start_idx, num_cp_opt, color2);
+
+    ros::Time tim = ros::Time::now();
+    traj_marker.markers[0].header.stamp = tim;
+    traj_marker.markers[1].header.stamp = tim;
     //spline_.getVelocityMarkers(traj_marker, "vel_marker", 2, Vector3(1,0,0), cp_opt_start_idx, num_cp_opt, Vector3(0,0,1));
   }
 
