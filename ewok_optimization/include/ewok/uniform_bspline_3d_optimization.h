@@ -85,6 +85,24 @@ class UniformBSpline3DOptimization {
     initTrajectoryTimeOptimization();
   }
 
+  UniformBSpline3DOptimization(const Vector3& start_point, ewok::PolynomialTrajectory3D<10>::Ptr & trajectory, _Scalar dt) :
+      spline_(dt), num_cp_opt(-1), cp_opt_start_idx(_N), trajectory_(trajectory) {
+
+    // Make sure initial position is static at starting point
+    for (int i = 0; i < _N; i++) {
+      spline_.push_back(start_point);
+    }
+
+    _Scalar enpoint_time = spline_.maxValidTime() - eps;
+    for(int i=0; i<2; i++) {
+      int grad_start_idx;
+      spline_.evaluateWithControlPointsGrad(enpoint_time, i, grad_start_idx, endpoint_grads[i]);
+    }
+
+    setDefaultWeights();
+    initTrajectoryTimeOptimization();
+  }
+
   Vector3 evaluate(_Scalar t, int derivative = 0) const {
 
     return spline_.evaluate(t + spline_.minValidTime(), derivative);

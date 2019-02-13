@@ -67,6 +67,198 @@ class PolynomialTrajectory3D {
       return _segments[seg_num]->evaluate(lt, derivative);
   }
 
+  void getRemovedSegmentTraj(visualization_msgs::MarkerArray &traj_marker_array,
+                              const double start_seg_time,
+                              const size_t start_seg_num,
+                              const double end_seg_time,
+                              const size_t end_seg_num,
+                              const std::string &ns,
+                              const Eigen::Vector3d &color,
+                              _Scalar dt = 0.1) {
+      //traj_marker_array.markers.resize(_segments.size());
+
+      _Scalar start_time, end_time;
+      int counter = 1;
+      for (int i = start_seg_num; i < _segments.size(); i++) {
+        start_time = 0;
+        _Scalar seg_end_dur = _segments[i]->duration();
+        end_time = seg_end_dur;
+        if((i == start_seg_num) && (i == end_seg_num)) {
+          /*
+          start_time = 0;
+          end_time = start_seg_time;
+          _segments[i]->getRemovedSegmentTraj(traj_marker_array.markers[counter],
+                                               start_time,
+                                               end_time,
+                                               ns,
+                                               counter,
+                                               color,
+                                               dt);
+          */
+          start_time = end_seg_time;
+          end_time = seg_end_dur;
+          //Append new segment passed externally
+          for(int jj = 0; jj < traj_marker_array.markers[0].points.size(); jj++)
+          {
+            traj_marker_array.markers[counter].points.push_back(traj_marker_array.markers[0].points[jj]);
+          }
+          _segments[i]->getRemovedSegmentTraj(traj_marker_array.markers[counter],
+                                               start_time,
+                                               end_time,
+                                               ns,
+                                               counter,
+                                               color,
+                                               dt);
+          counter++;
+          continue;
+        }
+        else {
+          if(i == start_seg_num) {
+            /*
+            end_time = start_seg_time;
+            _segments[i]->getRemovedSegmentTraj(traj_marker_array.markers[counter],
+                                                 start_time,
+                                                 end_time,
+                                                 ns,
+                                                 counter,
+                                                 color,
+                                                 dt);
+            */
+            for(int jj = 0; jj < traj_marker_array.markers[0].points.size(); jj++)
+            {
+              traj_marker_array.markers[counter].points.push_back(traj_marker_array.markers[0].points[jj]);
+            }
+            counter++;
+            continue;
+          }
+          if(i > start_seg_num && i < end_seg_num)
+            continue;
+          if(i == end_seg_num) {
+            start_time = end_seg_time;
+            _segments[i]->getRemovedSegmentTraj(traj_marker_array.markers[counter],
+                                                 start_time,
+                                                 end_time,
+                                                 ns,
+                                                 counter,
+                                                 color,
+                                                 dt);
+            counter++;
+            continue;
+          }
+        }
+        //Default case
+        start_time = 0;
+        end_time = seg_end_dur;
+        _segments[i]->getRemovedSegmentTraj(traj_marker_array.markers[counter],
+                                             start_time,
+                                             end_time,
+                                             ns,
+                                             counter,
+                                             color,
+                                             dt);
+        counter++;
+      }
+
+      //TODO remove unnecessary segments
+      /*
+      if(counter < _segments.size())
+      {
+        traj_marker_array.markers.erase(traj_marker_array.markers.begin() + counter, traj_marker_array.markers.end());
+      }*/
+  }
+
+/*
+  void getRemovedSegmentTraj(visualization_msgs::MarkerArray &traj_marker_array,
+                              const double start_seg_time,
+                              const size_t start_seg_num,
+                              const double end_seg_time,
+                              const size_t end_seg_num,
+                              const std::string &ns,
+                              const Eigen::Vector3d &color,
+                              _Scalar dt = 0.1) {
+      //traj_marker_array.markers.resize(_segments.size());
+
+      _Scalar start_time, end_time;
+      int counter = 1;
+      for (int i = 0; i < _segments.size(); i++) {
+        start_time = 0;
+        _Scalar seg_end_dur = _segments[i]->duration();
+        end_time = seg_end_dur;
+        if((i == start_seg_num) && (i == end_seg_num)) {
+          start_time = 0;
+          end_time = start_seg_time;
+          _segments[i]->getRemovedSegmentTraj(traj_marker_array.markers[counter],
+                                               start_time,
+                                               end_time,
+                                               ns,
+                                               counter,
+                                               color,
+                                               dt);
+          start_time = end_seg_time;
+          end_time = seg_end_dur;
+          //Append new segment passed externally
+          for(int jj = 0; jj < traj_marker_array.markers[0].points.size(); jj++)
+          {
+            traj_marker_array.markers[counter].points.push_back(traj_marker_array.markers[0].points[jj]);
+          }
+          _segments[i]->getRemovedSegmentTraj(traj_marker_array.markers[counter],
+                                               start_time,
+                                               end_time,
+                                               ns,
+                                               counter,
+                                               color,
+                                               dt);
+          counter++;
+          continue;
+        }
+        else {
+          if(i == start_seg_num) {
+            end_time = start_seg_time;
+            _segments[i]->getRemovedSegmentTraj(traj_marker_array.markers[counter],
+                                                 start_time,
+                                                 end_time,
+                                                 ns,
+                                                 counter,
+                                                 color,
+                                                 dt);
+            for(int jj = 0; jj < traj_marker_array.markers[0].points.size(); jj++)
+            {
+              traj_marker_array.markers[counter].points.push_back(traj_marker_array.markers[0].points[jj]);
+            }
+            counter++;
+            continue;
+          }
+          if(i > start_seg_num && i < end_seg_num)
+            continue;
+          if(i == end_seg_num) {
+            start_time = end_seg_time;
+            _segments[i]->getRemovedSegmentTraj(traj_marker_array.markers[counter],
+                                                 start_time,
+                                                 end_time,
+                                                 ns,
+                                                 counter,
+                                                 color,
+                                                 dt);
+            counter++;
+            continue;
+          }
+        }
+        //Default case
+        start_time = 0;
+        end_time = seg_end_dur;
+        _segments[i]->getRemovedSegmentTraj(traj_marker_array.markers[counter],
+                                             start_time,
+                                             end_time,
+                                             ns,
+                                             counter,
+                                             color,
+                                             dt);
+        counter++;
+      }
+
+  }
+*/
+
   void getVisualizationMarkerArray(visualization_msgs::MarkerArray &traj_marker_array,
                                    const std::string &ns,
                                    const Eigen::Vector3d &color,
@@ -81,8 +273,6 @@ class PolynomialTrajectory3D {
                                                dt);
       }
   }
-
- private:
 
   void findSegmentNumAndLocalTime(const _Scalar t,
                                   _Scalar &local_time,

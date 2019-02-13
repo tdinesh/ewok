@@ -89,6 +89,48 @@ class PolynomialSegment3D {
     }
   }
 
+  void getRemovedSegmentTraj(visualization_msgs::Marker &traj_marker,
+                              _Scalar start_time,
+                              _Scalar end_time,
+                              const std::string &ns,
+                              int id,
+                              const Eigen::Vector3d &color,
+                              _Scalar dt = 0.1,
+                              const ros::Duration &lifetime = ros::Duration(0),
+                              _Scalar scale = 0.01) {
+    traj_marker.header.frame_id = "world";
+    traj_marker.ns = ns;
+    traj_marker.id = id;
+    traj_marker.type = visualization_msgs::Marker::POINTS;
+    traj_marker.action = visualization_msgs::Marker::MODIFY;
+    traj_marker.scale.x = scale;
+    traj_marker.scale.y = scale;
+    traj_marker.scale.z = scale;
+    traj_marker.color.a = 1.0;
+
+    traj_marker.lifetime = lifetime;
+
+    traj_marker.color.r = color(0);
+    traj_marker.color.g = color(1);
+    traj_marker.color.b = color(2);
+    for (_Scalar time = start_time; time < end_time; time += dt) {
+      geometry_msgs::Point p;
+      p.x = polynomials_[0].evaluate(time, 0);
+      p.y = polynomials_[1].evaluate(time, 0);
+      p.z = polynomials_[2].evaluate(time, 0);
+      traj_marker.points.push_back(p);
+    }
+    /*
+    {
+      geometry_msgs::Point p;
+      p.x = polynomials_[0].evaluate(end_time, 0);
+      p.y = polynomials_[1].evaluate(end_time, 0);
+      p.z = polynomials_[2].evaluate(end_time, 0);
+      traj_marker.points.push_back(p);
+    }*/
+
+  }
+
   void getVisualizationMarker(visualization_msgs::Marker &traj_marker,
                               const std::string &ns,
                               int id,

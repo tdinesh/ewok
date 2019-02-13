@@ -137,7 +137,7 @@ class Polynomial3DOptimization {
 
     }
 
-    std::cerr << "Trajectory times: " << traj_segment_times.transpose() << std::endl;
+    //std::cerr << "Trajectory times: " << traj_segment_times.transpose() << std::endl;
 
     return computeTrajectoryWithTimes(waypoints, traj_segment_times);
 
