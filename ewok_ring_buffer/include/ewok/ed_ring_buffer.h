@@ -70,6 +70,17 @@ class EuclideanDistanceRingBuffer {
     return distance_buffer_.getVolumeCenter();
   }
 
+  bool isOccupied(const Vector3 & point) {
+    Vector3i idx;
+    distance_buffer_.getIdx(point, idx);
+    bool ret = distance_buffer_.insideVolume(idx);
+    if(!ret)
+      return true;
+
+    ret = occupancy_buffer_.isOccupied(idx);
+    return ret;
+  }
+
   void updateDistance() {
     compute_edt3d();
   }
