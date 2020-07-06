@@ -202,6 +202,7 @@ class RingBufferBase {
       m.pose.position.x = offset_point.x();
       m.pose.position.y = offset_point.y();
       m.pose.position.z = offset_point.z();
+      m.pose.orientation.w = 1.0;
 
       m.color.r = color(0);
       m.color.g = color(1);
@@ -212,13 +213,21 @@ class RingBufferBase {
               for (int z = 0; z < _N; z++) {
 
                   Vector3i coord(x, y, z);
-                  coord += offset_;
 
+                  Vector3 coord_point;
+                  getPoint(coord, coord_point);
+                  geometry_msgs::Point p;
+                  p.x = coord_point[0];
+                  p.y = coord_point[1];
+                  p.z = coord_point[2];
+
+                  /*
                   geometry_msgs::Point p;
                   p.x = x * resolution_;
                   p.y = y * resolution_;
                   p.z = z * resolution_;
-
+                  */
+                  coord += offset_;
                   _Datatype &data = this->at(coord);
 
                   if (func(data)) m.points.push_back(p);
