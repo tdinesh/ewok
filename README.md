@@ -3,30 +3,32 @@
 For more information see
 [https://vision.in.tum.de/research/robotvision/replanning](https://vision.in.tum.de/research/robotvision/replanning)
 
+[![teaser](ewok.gif)](https://www.youtube.com/watch?v=jh6tMHjxHSY)
+
 ### 1. Related Papers
 If you use this code, please cite the respective publications:
-* **Real-Time Trajectory Replanning for MAVs using Uniform B-splines and 3D Circular Buffer**, V. Usenko, L. von Stumberg, A. Pangercic, D. Cremers, In [arXiv:1703.01416](https://arxiv.org/abs/1703.01416), 2017
+* **Real-Time Trajectory Replanning for MAVs using Uniform B-splines and 3D Circular Buffer**, V. Usenko, L. von Stumberg, A. Pangercic, D. Cremers, In 2017 International Conference on Intelligent Robots and Systems (IROS) [[DOI:10.1109/IROS.2017.8202160]](https://doi.org/10.1109/IROS.2017.8202160) [[arXiv:1703.01416]](https://arxiv.org/abs/1703.01416).
 
 ### 2 Installation
 
-The system has been tested with Ubuntu 16.04 and ROS Kinetic.
+The system has been tested with  Ubuntu 20.04 (ROS Noetic) and Ubuntu 18.04 (ROS Melodic). For Ubuntu 16.04 (ROS Kinetic) switch to `ubuntu_16_04_kinetic` branch.
 
-Follow the tutorials to [install ROS Kinetic](http://wiki.ros.org/ROS/Installation) and to [set up catkin workspace](http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment).
+Follow the tutorials to [install ROS Noetic for 20.04 or ROS Melodic for 18.04 (desktop-full)](http://wiki.ros.org/ROS/Installation) and to [set up catkin workspace](http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment).
 
-Install additional dependencies:
+Install dependencies. For Ubuntu 20.04 (ROS Noetic):
 ```
-sudo apt-get install libeigen3-dev libsuitesparse-dev protobuf-compiler libnlopt-dev ros-kinetic-octomap ros-kinetic-octomap-rviz-plugins ros-kinetic-octomap-ros ros-kinetic-sophus
+sudo apt-get install git python python3-matplotlib python3-numpy libeigen3-dev libgoogle-glog-dev libatlas-base-dev libsuitesparse-dev protobuf-compiler libnlopt-dev libnlopt-cxx-dev ros-noetic-octomap ros-noetic-octomap-ros ros-noetic-octomap-msgs ros-noetic-tf-conversions ros-noetic-eigen-conversions
+```
+For Ubuntu 18.04 (ROS Melodic):
+```
+sudo apt-get install git python3-matplotlib python3-numpy libeigen3-dev libgoogle-glog-dev libatlas-base-dev libsuitesparse-dev protobuf-compiler libnlopt-dev ros-melodic-octomap ros-melodic-octomap-ros ros-melodic-octomap-msgs ros-melodic-tf-conversions ros-melodic-eigen-conversions
 ```
 
 Navigate to the source folder of your catkin workspace, download and build the software:
 ```
 cd ~/catkin_ws/src
-git clone https://github.com/vsu91/ewok.git
-cd ewok
-git submodule init
-git submodule update
-
-cd ../../
+git clone --recursive https://github.com/VladyslavUsenko/ewok.git
+cd ..
 catkin_make
 ```
 Some of the provided examples (trajectory_replanning_big_forest.launch) depend on the forest_gen dataset. With the above commands it should already be downloaded as a git submodule. Please check https://github.com/ethz-asl/forest_gen for more information about the dataset.
